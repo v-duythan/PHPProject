@@ -1,0 +1,70 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Thay đổi font chữ */
+    background-color: #f8f9fa; /* Màu nền nhạt hơn */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    background-color: white;
+    padding: 30px 40px; /* Tăng padding */
+    border-radius: 12px; /* Bo tròn góc nhiều hơn */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Hiệu ứng đổ bóng nổi bật hơn */
+    width: 400px; /*  Tăng chiều rộng */
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #343a40; /* Màu chữ đậm hơn */
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600; /*  Làm đậm label */
+}
+
+input {
+    width: 100%;
+    padding: 12px; /* Tăng padding */
+    margin-bottom: 20px;
+    border: 1px solid #ced4da; /* Màu border nhạt hơn */
+    border-radius: 6px; /* Bo tròn góc input */
+    box-sizing: border-box; /*  Bao gồm padding và border trong width */
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff; /*  Thay đổi màu button */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Thêm hiệu ứng chuyển đổi mượt mà */
+}
+
+button:hover {
+    background-color: #0069d9; /* Màu button khi hover */
+}
+
+.error {
+    color: #dc3545; /* Màu đỏ nổi bật hơn */
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+p {
+    text-align: center;
+    margin-top: 20px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600; /*  Làm đậm link */
+}

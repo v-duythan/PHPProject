@@ -1,0 +1,114 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    max-width: 95%;
+    margin: 20px auto;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+    text-align: center; /* Canh giữa tiêu đề */
+    width: 100%; /* Chiều rộng header bằng chiều rộng container */
+}
+
+.sidebar {
+    width: 220px;
+    background-color: #f0f0f0;
+    padding: 15px;
+    position: sticky; /* Giữ sidebar cố định khi cuộn */
+    top: 0; /* Dán sidebar vào đầu trang */
+    height: calc(100vh - 40px); /* Chiều cao sidebar bằng chiều cao viewport trừ đi margin top và bottom của container */
+    overflow-y: auto;
+}
+
+.sidebar h2 {
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li a {
+    display: block;
+    color: #333;
+    padding: 10px;
+    text-decoration: none;
+    transition: background-color 0.3s ease; /* Thêm hiệu ứng chuyển đổi mượt mà */
+}
+
+.sidebar li a:hover {
+    background-color: #ddd;
+}
+
+.content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+/* Basic table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+/* Style for table header cells */
+th {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: left;
+}
+
+/* Style for table data cells */
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+/* Alternate row colors for better readability */
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr{
+    line-height: 180%;
+}
+/* Hover effect for table rows */
+tr:hover {
+    background-color: #ddd;
+}
+
+/* Style links within table cells */
+td a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+/* Style the "Edit" link */
+td a:first-child {
+    margin-right: 10px; /* Add some space between links */
+}
+/* Nút xóa */
+.delete-btn {
+    color: red;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.delete-btn:hover {
+    color: darkred;
+    text-decoration: underline;
+}
