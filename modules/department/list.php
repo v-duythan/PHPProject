@@ -46,7 +46,7 @@ include_once __DIR__ . '/../../config/config.php';
     <?php
     // Hiển thị danh sách phòng ban
     if ($result->num_rows > 0) {
-        echo "<table border='1'>
+        echo "<table>
             <tr>
                 <th>Tên phòng ban</th>
                 <th>Mô tả</th>
@@ -64,7 +64,7 @@ include_once __DIR__ . '/../../config/config.php';
                 <td>" . htmlspecialchars($row["so_luong_nhan_vien"]) . "</td>
                 <td>
                     <a href='edit.php?id=" . htmlspecialchars($row['id']) . "'>Edit</a> |
-                    <a href='delete.php?id=" . htmlspecialchars($row['id']) . "' onclick='return confirm(\"Are you sure you want to delete this item?\")'>Delete</a>
+                    <a class='delete-btn' href='delete.php?id=" . htmlspecialchars($row['id']) . "' onclick='return confirm(\"Are you sure you want to delete this item?\")'>Delete</a>
                 </td>
               </tr>";
         }

@@ -1,6 +1,7 @@
 <?php
 // Kết nối tới cơ sở dữ liệu
 include '../../config/database.php';
+session_start();
 
 // Mặc định chọn năm và tháng nếu không có giá trị tìm kiếm
 $nam_luong = isset($_GET['nam_luong']) ? $_GET['nam_luong'] : '2024';

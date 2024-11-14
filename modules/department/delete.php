@@ -3,6 +3,9 @@ session_start(); // Bắt đầu session
 include '../../config/database.php';
 include_once __DIR__ . '/../../config/config.php';
 
+// Khởi tạo biến thông báo để lưu message
+$message = '';
+
 // Kiểm tra xem có ID phòng ban để xóa không
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $id = $_GET['id'];
@@ -18,7 +21,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
     // Nếu có nhân viên thuộc phòng ban, không cho phép xóa
     if ($count > 0) {
-        $_SESSION['message'] = "Không thể xóa phòng ban vì vẫn còn nhân viên thuộc phòng ban này.";
+        $message = "Không thể xóa phòng ban vì vẫn còn nhân viên thuộc phòng ban này.";
     } else {
         // Xóa phòng ban nếu không có nhân viên liên kết
         $sql = "DELETE FROM phong_ban WHERE id = ?";
@@ -26,20 +29,23 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         $stmt->bind_param("i", $id);
 
         if ($stmt->execute()) {
-            $_SESSION['message'] = "Phòng ban đã được xóa thành công.";
+            $message = "Phòng ban đã được xóa thành công.";
         } else {
-            $_SESSION['message'] = "Lỗi: " . $stmt->error;
+            $message = "Lỗi: " . $stmt->error;
         }
 
         $stmt->close();
     }
 } else {
-    $_SESSION['message'] = "ID phòng ban không hợp lệ.";
+    $message = "ID phòng ban không hợp lệ.";
 }
 
 $conn->close();
 
-// Quay lại trang danh sách phòng ban
-header("Location: list.php");
+// Sử dụng JavaScript để hiển thị thông báo và chuyển hướng lại trang danh sách
+echo "<script>
+    alert('$message');
+    window.location.href = 'list.php';
+</script>";
 exit;
 ?>

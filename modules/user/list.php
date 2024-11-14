@@ -30,21 +30,18 @@ include_once __DIR__ . '/../../config/config.php';
 <?php include '../../includes/admin_sidebar.php'; ?>
 
 <main class="content">
-    <h1>User Information</h1>
-
+    <h1>Thông tin người dùng</h1>
     <table>
         <tr>
-            <th>ID</th>
-            <th>Name</th>
+            <th>Họ tên</th>
             <th>Email</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
         </tr>
         <?php
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>
-                    <td>" . htmlspecialchars($row['id']) . "</td>
                     <td>" . htmlspecialchars($row['ten_dang_nhap']) . "</td>
                     <td>" . htmlspecialchars($row['email']) . "</td>
                     <td>" . htmlspecialchars($row['trang_thai']) . "</td>

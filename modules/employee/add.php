@@ -3,6 +3,20 @@ include '../../config/database.php';
 include_once __DIR__ . '/../../config/config.php';
 include '../../includes/header.php';
 include '../../includes/admin_sidebar.php';
+
+$sql_departments = "SELECT id, ten_phong_ban FROM phong_ban";
+$result_departments = $conn->query($sql_departments);
+if ($conn->error) {
+    die("Query failed: " . $conn->error);
+}
+
+// Lấy chức vụ cho từng phòng ban
+$sql_positions = "SELECT id, ten_chuc_vu FROM chuc_vu WHERE phong_ban_id = ?";
+$stmt_positions = $conn->prepare($sql_positions);
+$stmt_positions->bind_param("i", $phong_ban_id);
+$stmt_positions->execute();
+$result_positions = $stmt_positions->get_result();
+
 ?>
 
 <main class="content">
@@ -17,13 +31,11 @@ include '../../includes/admin_sidebar.php';
             <tr>
                 <th><label for="phong_ban">Phòng Ban:</label></th>
                 <td>
-                    <select name="phong_ban" id="phong_ban" required>
-                        <?php
-                        $result = $conn->query("SELECT id, ten_phong_ban FROM phong_ban");
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<option value='{$row['id']}'>{$row['ten_phong_ban']}</option>";
-                        }
-                        ?>
+                    <select name="phong_ban" id="phong_ban" required onchange="loadPositions(this.value)">
+                        <?php while ($department = $result_departments->fetch_assoc()) {
+                            $selected = ($department['id'] == $row['phong_ban_id']) ? 'selected' : '';
+                            echo "<option value='{$department['id']}' $selected>{$department['ten_phong_ban']}</option>";
+                        } ?>
                     </select>
                 </td>
             </tr>
@@ -31,12 +43,10 @@ include '../../includes/admin_sidebar.php';
                 <th><label for="chuc_vu">Chức Vụ:</label></th>
                 <td>
                     <select name="chuc_vu" id="chuc_vu" required>
-                        <?php
-                        $result = $conn->query("SELECT id, ten_chuc_vu FROM chuc_vu");
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<option value='{$row['id']}'>{$row['ten_chuc_vu']}</option>";
-                        }
-                        ?>
+                        <?php while ($position = $result_positions->fetch_assoc()) {
+                            $selected = ($position['id'] == $row['chuc_vu_id']) ? 'selected' : '';
+                            echo "<option value='{$position['id']}' $selected>{$position['ten_chuc_vu']}</option>";
+                        } ?>
                     </select>
                 </td>
             </tr>
@@ -72,7 +82,27 @@ include '../../includes/admin_sidebar.php';
         </table>
     </form>
 </main>
-
+<script>
+    function loadPositions(departmentId) {
+        fetch(`get_positions.php?phong_ban_id=${departmentId}`)
+            .then(response => response.json())
+            .then(data => {
+                const positionSelect = document.getElementById('chuc_vu');
+                positionSelect.innerHTML = ''; // Clear existing options
+                data.forEach(position => {
+                    const option = document.createElement('option');
+                    option.value = position.id;
+                    option.text = position.ten_chuc_vu;
+                    positionSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching positions:', error));
+    }
+    // Tự động tải chức vụ cho phòng ban hiện tại khi tải trang
+    window.onload = function() {
+        loadPositions(document.getElementById('phong_ban').value);
+    };
+</script>
 <?php include '../../includes/footer.php'; ?>
 </body>
 </html>

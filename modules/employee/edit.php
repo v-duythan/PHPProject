@@ -29,7 +29,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     exit;
 }
 
-// Đảm bảo phòng ban ID được gán giá trị
 $phong_ban_id = $row['phong_ban_id'];
 
 $sql_departments = "SELECT id, ten_phong_ban FROM phong_ban";

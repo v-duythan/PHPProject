@@ -33,21 +33,20 @@ include_once __DIR__ . '/../../config/config.php';
 <?php include '../../includes/admin_sidebar.php'; ?>
 
 <main class="content">
-    <h1>Employee Information</h1>
+    <h1>Thông tin sinh viên</h1>
 
     <table>
         <tr>
-            <!-- Remove the ID column -->
-            <th>Name</th>
+            <th>Họ tên</th>
             <th>Email</th>
-            <th>Phone</th>
-            <th>Address</th>
-            <th>Department</th>
-            <th>Position</th>
-            <th>Start Date</th>
-            <th>Username</th>
-            <th>Actions</th>
-            <th>Salary Details</th> <!-- Added new column for salary details -->
+            <th>SĐT</th>
+            <th>Địa chỉ</th>
+            <th>Phòng ban</th>
+            <th>Chức vụ</th>
+            <th>Ngày vào làm</th>
+            <th>Tên đăng nhập</th>
+            <th>Hành động</th>
+            <th>Chi tiết lương</th>
         </tr>
         <?php
         if ($result->num_rows > 0) {
