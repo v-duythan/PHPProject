@@ -20,16 +20,14 @@
     background-color: white;
     color: black;
     text-align: left;
-    padding: 12px; /* Tăng padding cho header */
-    width: 30%; /* Điều chỉnh chiều rộng cột label */
+    padding: 12px;
+    width: 30%;
 }
 
-/* Table data cells */
 .content td {
-    padding: 12px; /* Tăng padding cho các ô */
+    padding: 12px;
 }
 
-/* Input fields */
 .content input[type="text"],
 .content input[type="email"],
 .content input[type="tel"],
@@ -37,7 +35,7 @@
 .content input[type="number"],
 .content select {
     width: 100%;
-    padding: 10px; /* Tăng padding cho input */
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
     box-sizing: border-box;
@@ -45,10 +43,9 @@
 
 /* File input */
 .content input[type="file"] {
-    padding: 8px; /* Tăng padding cho input file */
+    padding: 8px;
 }
 
-/* Invalid fields */
 .content input:invalid,
 .content select:invalid {
     border-color: red;

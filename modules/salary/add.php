@@ -4,9 +4,11 @@ include_once __DIR__ . '/../../config/config.php';
 include '../../includes/header.php';
 include '../../includes/admin_sidebar.php';
 
-// Lấy danh sách nhân viên để chọn trong form
-$employees_sql = "SELECT id, ho_ten FROM nhan_vien";
+
+$employees_sql = "SELECT id, ho_ten, luong_thoa_thuan FROM nhan_vien";
 $employees_result = $conn->query($employees_sql);
+
+
 
 // Xử lý khi form được gửi
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -57,10 +59,12 @@ $conn->close();
             <tr>
                 <td><label for="nhan_vien_id">Nhân Viên:</label></td>
                 <td>
-                    <select name="nhan_vien_id" id="nhan_vien_id" required>
-                        <option value="">Chọn nhân viên</option>
+                    <select name="nhan_vien_id" id="nhan_vien_id" onchange="updateLuongCoBan()" required>
+                        <option value="" data-luong-thoa-thuan="">Chọn nhân viên</option>
                         <?php while ($employee = $employees_result->fetch_assoc()): ?>
-                            <option value="<?= $employee['id'] ?>"><?= htmlspecialchars($employee['ho_ten']) ?></option>
+                            <option value="<?= $employee['id'] ?>" data-luong-thoa-thuan="<?= $employee['luong_thoa_thuan'] ?>">
+                                <?= htmlspecialchars($employee['ho_ten']) ?>
+                            </option>
                         <?php endwhile; ?>
                     </select>
                 </td>
@@ -103,6 +107,23 @@ $conn->close();
         </table>
     </form>
 </main>
+
+<script>
+    function updateLuongCoBan() {
+        const nhanVienSelect = document.getElementById('nhan_vien_id');
+        const luongCoBanInput = document.getElementById('luong_cung');
+        const selectedOption = nhanVienSelect.options[nhanVienSelect.selectedIndex];
+        const luongThoaThuan = selectedOption.getAttribute('data-luong-thoa-thuan');
+
+
+        if (luongThoaThuan) {
+            luongCoBanInput.value = parseFloat(luongThoaThuan).toFixed(2);
+        } else {
+            luongCoBanInput.value = '';
+        }
+    }
+</script>
+
 
 <?php include '../../includes/footer.php'; ?>
 </body>

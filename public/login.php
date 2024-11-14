@@ -25,16 +25,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($result->num_rows > 0) {
             $user = $result->fetch_assoc();
 
-            // Kiểm tra mật khẩu bằng cách so sánh mật khẩu đã băm SHA-1
             if ($hashed_password === $user['mat_khau']) {
                 // Secure session management
                 session_regenerate_id(true);
 
-                // Mật khẩu chính xác, lưu thông tin người dùng vào session
                 $_SESSION['username'] = htmlspecialchars($user['ten_dang_nhap']);
                 $_SESSION['role'] = htmlspecialchars($user['vai_tro']);
 
-                // Chuyển hướng đến trang chính sau khi đăng nhập thành công
+                $nguoi_dung_id = $user['id'];
+                $query = "SELECT id FROM nhan_vien WHERE nguoi_dung_id = ?";
+                $stmt = $conn->prepare($query);
+                $stmt->bind_param("i", $nguoi_dung_id);
+                $stmt->execute();
+                $stmt->bind_result($nhan_vien_id);
+                $stmt->fetch();
+                $_SESSION['nhan_vien_id'] = $nhan_vien_id;
+                $stmt->close();
+
                 header("Location: index.php");
                 exit();
             } else {

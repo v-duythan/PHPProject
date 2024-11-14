@@ -1,25 +1,30 @@
 <?php include_once __DIR__ . '/../config/config.php'; ?>
 <aside class="sidebar">
     <h2>Menu Admin</h2>
-    <ul>
-        <li>
-            <a href="<?php echo BASE_URL; ?>modules/employee/list.php">Danh sách nhân viên</a>
-            <ul>
-                <li><a href="<?php echo BASE_URL; ?>modules/employee/add.php">Add</a></li>
+    <ul style="list-style-type:none; padding:0;">
+        <li style="margin-bottom:10px;">
+            <a href="<?php echo BASE_URL; ?>modules/employee/list.php" style="color:#333; text-decoration:none;">Danh
+                sách nhân viên</a>
+            <ul style="list-style-type:none; padding-left:20px;">
+                <li><a href="<?php echo BASE_URL; ?>modules/employee/add.php" style="color:#333; text-decoration:none;">Thêm nhân viên</a>
+                </li>
             </ul>
         </li>
-        <li>
-            <a href="<?php echo BASE_URL; ?>modules/salary/list.php">Quản lý lương</a>
-            <ul>
-                <li><a href="<?php echo BASE_URL; ?>modules/salary/add.php">Add</a></li>
+        <li style="margin-bottom:10px;">
+            <a href="<?php echo BASE_URL; ?>modules/salary/list.php" style="color:#333; text-decoration:none;">Quản lý
+                lương</a>
+            <ul style="list-style-type:none; padding-left:20px;">
+                <li><a href="<?php echo BASE_URL; ?>modules/salary/add.php" style="color:#333; text-decoration:none;">Thêm bản ghi lương</a>
+                </li>
             </ul>
         </li>
-        <li>
-            <a href="<?php echo BASE_URL; ?>modules/user/list.php">Quản lý người dùng</a>
+        <li style="margin-bottom:10px;">
+            <a href="<?php echo BASE_URL; ?>modules/user/list.php" style="color:#333; text-decoration:none;">Quản lý
+                người dùng</a>
         </li>
         <li>
-            <a href="<?php echo BASE_URL; ?>modules/department/list.php">Quản lý phòng ban</a>
-
+            <a href="<?php echo BASE_URL; ?>modules/department/list.php" style="color:#333; text-decoration:none;">Quản
+                lý phòng ban</a>
         </li>
     </ul>
 </aside>

@@ -33,7 +33,7 @@ include_once __DIR__ . '/../../config/config.php';
 <?php include '../../includes/admin_sidebar.php'; ?>
 
 <main class="content">
-    <h1>Thông tin sinh viên</h1>
+    <h1>Quản lý nhân viên</h1>
 
     <table>
         <tr>
