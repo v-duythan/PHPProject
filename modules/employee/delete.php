@@ -1,6 +1,7 @@
 <?php
 include '../../config/database.php';
 include_once __DIR__ . '/../../config/config.php';
+session_start();
 
 // Kiểm tra xem có ID nhân viên để xóa không
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {

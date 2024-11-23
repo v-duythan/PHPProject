@@ -33,13 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION['role'] = htmlspecialchars($user['vai_tro']);
 
                 $nguoi_dung_id = $user['id'];
-                $query = "SELECT id FROM nhan_vien WHERE nguoi_dung_id = ?";
+                $query = "SELECT id, ho_ten FROM nhan_vien WHERE nguoi_dung_id = ?";
                 $stmt = $conn->prepare($query);
                 $stmt->bind_param("i", $nguoi_dung_id);
                 $stmt->execute();
-                $stmt->bind_result($nhan_vien_id);
+                $stmt->bind_result($nhan_vien_id, $ho_ten);
                 $stmt->fetch();
                 $_SESSION['nhan_vien_id'] = $nhan_vien_id;
+                $_SESSION['ho_ten'] = $ho_ten;
                 $stmt->close();
 
                 header("Location: index.php");

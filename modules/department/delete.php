@@ -23,7 +23,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     if ($count > 0) {
         $message = "Không thể xóa phòng ban vì vẫn còn nhân viên thuộc phòng ban này.";
     } else {
-        // Xóa phòng ban nếu không có nhân viên liên kết
         $sql = "DELETE FROM phong_ban WHERE id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $id);
@@ -42,7 +41,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
 $conn->close();
 
-// Sử dụng JavaScript để hiển thị thông báo và chuyển hướng lại trang danh sách
 echo "<script>
     alert('$message');
     window.location.href = 'list.php';

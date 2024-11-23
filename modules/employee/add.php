@@ -1,8 +1,10 @@
 <?php
 include '../../config/database.php';
 include_once __DIR__ . '/../../config/config.php';
+session_start();
 include '../../includes/header.php';
 include '../../includes/admin_sidebar.php';
+
 
 $sql_departments = "SELECT id, ten_phong_ban FROM phong_ban";
 $result_departments = $conn->query($sql_departments);

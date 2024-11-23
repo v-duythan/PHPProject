@@ -3,6 +3,7 @@ include '../../config/database.php';
 include_once __DIR__ . '/../../config/config.php';
 include '../../includes/header.php';
 include '../../includes/admin_sidebar.php';
+session_start();
 
 // Kiểm tra ID phòng ban cần chỉnh sửa
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {

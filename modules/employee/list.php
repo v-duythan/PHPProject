@@ -1,25 +1,26 @@
 <?php
-// Start session and check if user is logged in
 session_start();
 
-// Check if the user is logged in
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
 
-// Include the database connection file
 require_once '../../config/database.php';
 
-// SQL query to fetch employee data
 $sql = '
-    SELECT nhan_vien.id, nhan_vien.ho_ten, nhan_vien.email, nhan_vien.so_dien_thoai, nhan_vien.dia_chi, 
+    SELECT nhan_vien.id, nhan_vien.ho_ten, nhan_vien.email, nhan_vien.so_dien_thoai, 
            nhan_vien.ngay_vao_lam, nguoi_dung.ten_dang_nhap, 
-           phong_ban.ten_phong_ban AS phong_ban, chuc_vu.ten_chuc_vu AS chuc_vu
+           phong_ban.ten_phong_ban AS phong_ban, chuc_vu.ten_chuc_vu AS chuc_vu,
+           CONCAT_WS(", ", dia_chi.so_nha, wards.full_name, districts.full_name, provinces.full_name) AS dia_chi
     FROM nhan_vien
     JOIN nguoi_dung ON nhan_vien.nguoi_dung_id = nguoi_dung.id
     JOIN chuc_vu ON nhan_vien.chuc_vu_id = chuc_vu.id
     JOIN phong_ban ON chuc_vu.phong_ban_id = phong_ban.id
+    LEFT JOIN dia_chi ON nhan_vien.id = dia_chi.nhan_vien_id
+    LEFT JOIN wards ON dia_chi.phuong_xa_id = wards.code
+    LEFT JOIN districts ON dia_chi.quan_huyen_id = districts.code
+    LEFT JOIN provinces ON dia_chi.tinh_thanh_id = provinces.code
 ';
 
 
@@ -32,7 +33,7 @@ include_once __DIR__ . '/../../config/config.php';
 
 <?php include '../../includes/admin_sidebar.php'; ?>
 
-<main class="content">
+<main class="container">
     <h1>Quản lý nhân viên</h1>
 
     <table>
@@ -76,7 +77,6 @@ include_once __DIR__ . '/../../config/config.php';
     </table>
 </main>
 
-<!-- Include footer -->
 <?php include '../../includes/footer.php'; ?>
 
 </body>

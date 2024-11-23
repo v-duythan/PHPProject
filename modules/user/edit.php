@@ -1,7 +1,8 @@
 <?php
 // Kết nối tới cơ sở dữ liệu
 include '../../config/database.php';
-include_once __DIR__ . '/../../config/config.php'; // Include BASE_URL từ config.php
+include_once __DIR__ . '/../../config/config.php';
+session_start();
 
 // Lấy ID người dùng từ URL
 $user_id = isset($_GET['id']) ? intval($_GET['id']) : 0;

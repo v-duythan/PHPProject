@@ -29,7 +29,7 @@ include_once __DIR__ . '/../../config/config.php';
 
 <?php include '../../includes/admin_sidebar.php'; ?>
 
-<main class="content">
+<main class="container">
     <h1>Thông tin người dùng</h1>
     <table>
         <tr>

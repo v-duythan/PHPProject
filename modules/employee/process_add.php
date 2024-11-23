@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 // Correct the bind_param string
                 $stmt_employee->bind_param(
-                    "sisssssds",  // Correct number of parameters
+                    "sisssssds",
                     $ho_ten,        // s - string
                     $chuc_vu,       // i - integer
                     $email,         // s - string

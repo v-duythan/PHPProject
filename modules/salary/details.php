@@ -1,7 +1,8 @@
 <?php
 // Kết nối tới cơ sở dữ liệu
 include '../../config/database.php';
-include_once __DIR__ . '/../../config/config.php'; // Include BASE_URL từ config.php
+include_once __DIR__ . '/../../config/config.php';
+session_start();
 
 // Lấy id nhân viên từ URL
 $nhan_vien_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -55,7 +56,7 @@ $row = $result->fetch_assoc(); // Lấy dữ liệu chi tiết
 <?php include '../../includes/header.php'; ?>
 <?php include '../../includes/admin_sidebar.php'; ?>
 
-<main class="content">
+<main class="container">
     <h1>Chi tiết Lương Nhân Viên</h1>
 
     <!-- Form lọc tháng và năm -->

@@ -1,67 +1,126 @@
+/* Tổng thể */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
 
-/* Form container */
-.content form {
-    width: 800px; /* Tăng chiều rộng form */
-    margin: 0 auto;
-    padding: 30px; /* Thêm khoảng cách bên trong */
+/* Phần nội dung chính */
+main.content {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
     background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Tăng độ mờ của bóng */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Table styling */
-.content table {
-    width: 100%;
-    border-collapse: collapse;
+/* Tiêu đề */
+main.content h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
-/* Table header cells */
-.content th {
-    background-color: white;
-    color: black;
-    text-align: left;
-    padding: 12px;
-    width: 30%;
+/* Form chỉnh sửa */
+form {
+    display: flex;
+    flex-direction: column;
 }
 
-.content td {
-    padding: 12px;
+/* Nhãn (Label) */
+form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    color: #555;
 }
 
-.content input[type="text"],
-.content input[type="email"],
-.content input[type="tel"],
-.content input[type="date"],
-.content input[type="number"],
-.content select {
+/* Input và Select */
+form input[type="text"],
+form input[type="email"],
+form input[type="date"],
+form input[type="tel"],
+form input[type="number"],
+form input[type="time"],
+textarea,
+form select {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
     box-sizing: border-box;
 }
 
-/* File input */
-.content input[type="file"] {
-    padding: 8px;
+form input:focus,
+form select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
 }
 
-.content input:invalid,
-.content select:invalid {
-    border-color: red;
-}
-
-/* Submit button */
-.content button[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px 24px; /* Tăng padding cho nút */
+/* Nút bấm */
+form button {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #007bff;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s;
 }
 
-.content button[type="submit"]:hover {
-    background-color: #45a049;
+form button:hover {
+    background-color: #0056b3;
+}
+
+/* Tùy chọn mặc định */
+form select option {
+    font-size: 14px;
+    color: #333;
+}
+
+/* Chỉnh sửa thông báo lỗi */
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.success-message {
+    color: green;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    main.content {
+        padding: 15px;
+    }
+
+    form label {
+        font-size: 14px;
+    }
+
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="date"],
+    form select {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    form button {
+        font-size: 14px;
+        padding: 8px;
+    }
 }
