@@ -42,12 +42,13 @@ include_once __DIR__ . '/../../config/config.php';
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>
+
                     <td>" . htmlspecialchars($row['ten_dang_nhap']) . "</td>
                     <td>" . htmlspecialchars($row['email']) . "</td>
                     <td>" . htmlspecialchars($row['trang_thai']) . "</td>
                     <td>
-                        <a href='edit.php?id=" . htmlspecialchars($row['id']) . "'>Edit</a> |
-                        <a href='delete.php?id=" . htmlspecialchars($row['id']) . "' onclick='return confirm(\"Are you sure you want to delete this item?\")'>Delete</a>
+                        <a href='edit.php?id=" . htmlspecialchars($row['id']) . "'>Edit</a> 
+                       
                     </td>
                   </tr>";
             }

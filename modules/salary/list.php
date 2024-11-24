@@ -8,6 +8,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 session_start();
 
+
 $current_month = date('n'); // Tháng hiện tại (1-12)
 $current_year = date('Y'); // Năm hiện tại
 
@@ -112,9 +113,14 @@ while ($row = $result->fetch_assoc()) {
 }
 ?>
 
-<?php include '../../includes/header.php'; ?>
-<?php include '../../includes/admin_sidebar.php'; ?>
-
+<?php include '../../includes/header.php';
+if ($vaitro !== 'Admin') {
+    include '../../includes/user_sidebar.php';
+} else {
+    include '../../includes/admin_sidebar.php';
+    exit;
+}
+?>
 <div class="container">
     <form action="calculate.php" method="GET" style="background-color: #f5f5f5; padding: 20px; border-radius: 5px;">
         <label for="month" style="font-weight: bold;">Tháng:</label>
@@ -144,13 +150,6 @@ while ($row = $result->fetch_assoc()) {
             <th>Số Ngày Nghỉ Phép</th>
             <th>Số Ngày Vắng</th>
             <th>Số Giờ Làm Thêm</th>
-            <th>Lương Cơ Bản</th>
-            <th>Lương Ngày Công</th>
-            <th>Lương Làm Thêm</th>
-            <th>Phụ Cấp</th>
-            <th>Thưởng</th>
-            <th>Bảo Hiểm</th>
-            <th>Khấu Trừ Khác</th>
             <th>Tổng Lương</th>
         </tr>
         </thead>
@@ -162,17 +161,10 @@ while ($row = $result->fetch_assoc()) {
                 <td><?php echo $row['so_ngay_nghi_phep']; ?></td>
                 <td><?php echo $row['so_ngay_vang']; ?></td>
                 <td><?php echo $row['so_gio_lam_them']; ?></td>
-                <td><?php echo number_format($row['luong_co_ban'], 0, ',', '.'); ?> VNĐ</td>
-                <td><?php echo number_format($row['luong_ngay_cong'], 0, ',', '.'); ?> VNĐ</td>
-                <td><?php echo number_format($row['luong_lam_them'], 0, ',', '.'); ?> VNĐ</td>
-                <td><?php echo number_format($row['phu_cap'], 0, ',', '.'); ?> VNĐ</td>
-                <td><?php echo number_format($row['thuong'], 0, ',', '.'); ?> VNĐ</td>
-                <td><?php echo number_format($row['bao_hiem'], 0, ',', '.'); ?> VNĐ</td>
-                <td><?php echo number_format($row['khoan_tru_khac'], 0, ',', '.'); ?> VNĐ</td>
                 <td><?php echo number_format($row['tong_luong'], 0, ',', '.'); ?> VNĐ</td>
             </tr>
             <tr>
-                <td colspan="13">
+                <td colspan="6">
                     <details>
                         <summary>Chi tiết</summary>
                         <p>Lương Cơ Bản: <?php echo number_format($row['luong_co_ban'], 0, ',', '.'); ?> VNĐ</p>

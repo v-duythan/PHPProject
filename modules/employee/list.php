@@ -10,7 +10,6 @@ require_once '../../config/database.php';
 
 $sql = '
     SELECT nhan_vien.id, nhan_vien.ho_ten, nhan_vien.email, nhan_vien.so_dien_thoai, 
-           nhan_vien.ngay_vao_lam, nguoi_dung.ten_dang_nhap, 
            phong_ban.ten_phong_ban AS phong_ban, chuc_vu.ten_chuc_vu AS chuc_vu,
            CONCAT_WS(", ", dia_chi.so_nha, wards.full_name, districts.full_name, provinces.full_name) AS dia_chi
     FROM nhan_vien
@@ -44,8 +43,6 @@ include_once __DIR__ . '/../../config/config.php';
             <th>Địa chỉ</th>
             <th>Phòng ban</th>
             <th>Chức vụ</th>
-            <th>Ngày vào làm</th>
-            <th>Tên đăng nhập</th>
             <th>Hành động</th>
             <th>Chi tiết lương</th>
         </tr>
@@ -59,8 +56,6 @@ include_once __DIR__ . '/../../config/config.php';
                     <td>" . htmlspecialchars($row['dia_chi']) . "</td>
                     <td>" . htmlspecialchars($row['phong_ban']) . "</td>
                     <td>" . htmlspecialchars($row['chuc_vu']) . "</td>
-                    <td>" . htmlspecialchars($row['ngay_vao_lam']) . "</td>
-                    <td>" . htmlspecialchars($row['ten_dang_nhap']) . "</td>
                     <td>
                         <a href='edit.php?id=" . htmlspecialchars($row['id']) . "'>Edit</a> |
                         <a href='delete.php?id=" . htmlspecialchars($row['id']) . "' onclick='return confirm(\"Are you sure you want to delete this item?\")'>Delete</a>
@@ -71,7 +66,7 @@ include_once __DIR__ . '/../../config/config.php';
                   </tr>";
             }
         } else {
-            echo "<tr><td colspan='10'>0 results</td></tr>";
+            echo "<tr><td colspan='8'>0 results</td></tr>";
         }
         ?>
     </table>

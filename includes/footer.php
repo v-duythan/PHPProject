@@ -2,10 +2,11 @@
     color: white;
     text-align: center;
     padding: 10px 0;
-    position: relative;
+    position: fixed;
     bottom: 0;
     width: 100%;">
-    <p>&copy; 2024 Your Company. All rights reserved.</p>
+    <p>&copy; 2024 DUYTHAN COMPANY. All rights reserved.</p>
+    <p>Contact us: vduythan@gmail.com | Phone: 0389254181</p>
 </footer>
 </div>
 </body>

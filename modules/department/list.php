@@ -7,6 +7,10 @@ if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit();
 }
+if ($vai_tro != "Admin") {
+    header("Location: ../../public/index.php");
+    exit();
+}
 if (isset($_SESSION['message'])) {
     echo "<div class='alert'>" . $_SESSION['message'] . "</div>";
     unset($_SESSION['message']); // Xóa thông báo sau khi hiển thị

@@ -1,41 +1,90 @@
 <?php
-include '../../config/database.php';
-include_once __DIR__ . '/../../config/config.php';
 session_start();
+require_once '../config/database.php'; // Kết nối với cơ sở dữ liệu
 
-// Kiểm tra xem có ID nhân viên để xóa không
-if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $id = $_GET['id'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-    // Kiểm tra xem nhân viên có phải là trưởng phòng của bất kỳ phòng ban nào không
-    $check_sql = "SELECT COUNT(*) AS count FROM phong_ban WHERE truong_phong_id = ?";
-    $check_stmt = $conn->prepare($check_sql);
-    $check_stmt->bind_param("i", $id);
-    $check_stmt->execute();
-    $check_stmt->bind_result($count);
-    $check_stmt->fetch();
-    $check_stmt->close();
+    // Mã hóa mật khẩu bằng SHA-1 để so sánh với cơ sở dữ liệu
+    $hashed_password = sha1($password);
 
-    if ($count > 0) {
-        // Hiển thị thông báo nếu nhân viên là trưởng phòng
-        echo "<script>alert('Không thể xóa nhân viên vì họ đang là trưởng phòng của một phòng ban.'); window.location.href = 'list.php';</script>";
-    } else {
-        // Xóa nhân viên nếu không là trưởng phòng
-        $sql = "DELETE FROM nhan_vien WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $id);
+    // Kiểm tra xem kết nối có được thiết lập thành công hay không
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
 
-        if ($stmt->execute()) {
-            echo "<script>alert('Nhân viên đã được xóa thành công.'); window.location.href = 'list.php';</script>";
+    // Truy vấn người dùng chỉ bằng `ten_dang_nhap`
+    $sql = "SELECT * FROM nguoi_dung WHERE ten_dang_nhap = ? AND trang_thai = 'Active'";
+
+
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+
+            if ($hashed_password === $user['mat_khau']) {
+                    // Secure session management
+                    session_regenerate_id(true);
+
+                    $_SESSION['username'] = htmlspecialchars($user['ten_dang_nhap']);
+                    $_SESSION['role'] = htmlspecialchars($user['vai_tro']);
+
+                    $nguoi_dung_id = $user['id'];
+                    $query = "SELECT id, ho_ten FROM nhan_vien WHERE nguoi_dung_id = ?";
+                    $stmt = $conn->prepare($query);
+                    $stmt->bind_param("i", $nguoi_dung_id);
+                    $stmt->execute();
+                    $stmt->bind_result($nhan_vien_id, $ho_ten);
+                    $stmt->fetch();
+                    $_SESSION['nhan_vien_id'] = $nhan_vien_id;
+                    $_SESSION['ho_ten'] = $ho_ten;
+                    $stmt->close();
+
+                    header("Location: index.php");
+                    exit();
+
+            } else {
+                $error = "Mật khẩu không đúng!";
+            }
+
         } else {
-            echo "<script>alert('Lỗi: " . $stmt->error . "'); window.location.href = 'list.php';</script>";
+            $error = "Tài khoản không tồn tại hoặc không hoạt động.";
         }
 
         $stmt->close();
+    } else {
+        $error = "Có lỗi xảy ra trong quá trình chuẩn bị truy vấn.";
     }
-} else {
-    echo "<script>alert('ID nhân viên không hợp lệ.'); window.location.href = 'list.php';</script>";
-}
 
-$conn->close();
+    $conn->close();
+}
 ?>
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập</title>
+    <link rel="stylesheet" href="../includes/css/login_style.css">
+</head>
+<body>
+<div class="login-container">
+    <h2>Đăng nhập</h2>
+    <?php if (isset($error)) { echo "<div class='error'>$error</div>"; } ?>
+    <form action="login.php" method="POST">
+        <label for="username">Tên đăng nhập</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Mật khẩu</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Đăng nhập</button>
+    </form>
+</div>
+</body>
+</html>

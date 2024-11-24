@@ -16,12 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $gio_ra = $_POST['gio_ra'] ?: NULL;
     $ly_do = $_POST['ly_do'] ?: NULL;
     $ghi_chu = $_POST['ghi_chu'] ?: NULL;
-    //ràng buộc dữ liệu
-    if (empty($nhan_vien_id) || empty($ngay) || empty($trang_thai)) {
-        $error = "Vui lòng nhập đầy đủ thông tin.";
-    }
-    
-    
 
     $sql = "INSERT INTO cham_cong (nhan_vien_id, ngay, trang_thai, gio_vao, gio_ra, ly_do_vang_mat, ghi_chu)
             VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -35,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error = "Có lỗi xảy ra khi thêm bản ghi.";
     }
 }
+$today = date('Y-m-d');
 ?>
 
 <?php include '../../includes/header.php'; ?>
@@ -44,11 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div class="container">
     <h2>Thêm Bản Ghi Chấm Công</h2>
     <?php if (isset($error)) echo "<p>$error</p>"; ?>
-
     <!-- Form thêm chấm công -->
-    <form method="POST">
+    <form method="POST" id="attendanceForm">
         <label for="nhan_vien_id">Nhân viên</label>
-        <select name="nhan_vien_id" required>
+        <select name="nhan_vien_id" id="nhan_vien_id" required>
             <option value="">-- Chọn nhân viên --</option>
             <?php
             $result = $conn->query("SELECT id, ho_ten FROM nhan_vien ORDER BY ho_ten ASC");
@@ -58,24 +52,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ?>
         </select>
 
+        <label for="chuc_vu">Chức vụ</label>
+        <input type="text" id="chuc_vu" name="chuc_vu" readonly>
+
+        <label for="phong_ban">Phòng ban</label>
+        <input type="text" id="phong_ban" name="phong_ban" readonly>
+
         <label for="ngay">Ngày</label>
-        <input type="date" name="ngay" required>
+        <input type="date" name="ngay" value="<?php echo $today; ?>" required>
 
         <label for="trang_thai">Trạng thái</label>
-        <select name="trang_thai" required>
+        <select name="trang_thai" id="trang_thai" required>
             <option value="CóMặt">Có mặt</option>
             <option value="VắngMặt">Vắng mặt</option>
             <option value="NghỉPhép">Nghỉ phép</option>
         </select>
 
         <label for="gio_vao">Giờ vào</label>
-        <input type="time" name="gio_vao">
+        <input type="time" name="gio_vao" id="gio_vao">
 
         <label for="gio_ra">Giờ ra</label>
-        <input type="time" name="gio_ra">
+        <input type="time" name="gio_ra" id="gio_ra">
 
         <label for="ly_do">Lý do vắng mặt (nếu có)</label>
-        <textarea name="ly_do"></textarea>
+        <textarea name="ly_do" id="ly_do"></textarea>
 
         <label for="ghi_chu">Ghi chú</label>
         <textarea name="ghi_chu"></textarea>
@@ -83,6 +83,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <button type="submit">Thêm</button>
     </form>
 </div>
+
+<script>
+    document.getElementById('nhan_vien_id').addEventListener('change', function() {
+        var nhanVienId = this.value;
+        if (nhanVienId) {
+            fetch('get_employee_details.php?nhan_vien_id=' + nhanVienId)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById('chuc_vu').value = '';
+                        document.getElementById('phong_ban').value = '';
+                    } else {
+                        document.getElementById('chuc_vu').value = data.ten_chuc_vu;
+                        document.getElementById('phong_ban').value = data.ten_phong_ban;
+                    }
+                });
+        } else {
+            document.getElementById('chuc_vu').value = '';
+            document.getElementById('phong_ban').value = '';
+        }
+    });
+
+    document.getElementById('attendanceForm').addEventListener('submit', function(event) {
+        var trangThai = document.getElementById('trang_thai').value;
+        var gioVao = document.getElementById('gio_vao').value;
+        var gioRa = document.getElementById('gio_ra').value;
+        var lyDo = document.getElementById('ly_do').value;
+
+        if (
+            (trangThai === 'CóMặt' && (!gioVao || !gioRa)) ||
+            (trangThai === 'VắngMặt' && !lyDo) ||
+            (trangThai === 'CóMặt' && lyDo) ||
+            ((trangThai === 'VắngMặt' || trangThai === 'NghỉPhép') && (gioVao || gioRa))
+        ) {
+            alert(
+                trangThai === 'CóMặt' && (!gioVao || !gioRa) ? 'Khi có mặt, phải có thời gian ra vào.' :
+                    trangThai === 'VắngMặt' && !lyDo ? 'Khi vắng mặt, phải có lý do.' :
+                        trangThai === 'CóMặt' && lyDo ? 'Khi có mặt, không được điền lý do vắng mặt.' :
+                            'Khi vắng mặt hoặc nghỉ phép, không được điền giờ ra vào.'
+            );
+            event.preventDefault();
+        }
+
+    });
+</script>
 
 </body>
 </html>

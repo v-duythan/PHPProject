@@ -1,6 +1,7 @@
 <?php include_once __DIR__ . '/../config/config.php';
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : 'Guest';
 $ho_ten = isset($_SESSION['ho_ten']) ? $_SESSION['ho_ten'] : 'Guest';
+$vaitro = isset($_SESSION['vaitro']) ? $_SESSION['vaitro'] : 'Guest';
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -54,6 +55,8 @@ $ho_ten = isset($_SESSION['ho_ten']) ? $_SESSION['ho_ten'] : 'Guest';
              onclick="window.location.href='<?php echo BASE_URL; ?>public/index.php'">
         <h1 style="font-size: 24px; color: #343a40; margin: 20px;">Chào
             mừng, <?php echo htmlspecialchars($ho_ten); ?></h1>
+
+        <h1 style="color: #007bff; margin: 20px;"><?php echo date('d/m/Y'); ?></h1>
         <a href="<?php echo BASE_URL; ?>public/logout.php" style="color: #007bff; text-decoration: none; margin: 20px;">Đăng
             xuất</a>
     </header>

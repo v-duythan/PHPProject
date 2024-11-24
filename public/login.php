@@ -15,7 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Truy vấn người dùng chỉ bằng `ten_dang_nhap`
-    $sql = "SELECT * FROM nguoi_dung WHERE ten_dang_nhap = ?";
+    $sql = "SELECT * FROM nguoi_dung WHERE ten_dang_nhap = ? AND trang_thai = 'Active'";
+
 
     if ($stmt = $conn->prepare($sql)) {
         $stmt->bind_param("s", $username);
