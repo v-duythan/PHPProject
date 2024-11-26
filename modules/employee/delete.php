@@ -1,90 +1,73 @@
 <?php
+include '../../config/database.php';
+include_once __DIR__ . '/../../config/config.php';
 session_start();
-require_once '../config/database.php'; // Kết nối với cơ sở dữ liệu
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id']) && is_numeric($_GET['id'])) {
+    $nhan_vien_id = intval($_GET['id']);
 
-    // Mã hóa mật khẩu bằng SHA-1 để so sánh với cơ sở dữ liệu
-    $hashed_password = sha1($password);
+    // Bắt đầu giao dịch
+    $conn->begin_transaction();
 
-    // Kiểm tra xem kết nối có được thiết lập thành công hay không
-    if (!$conn) {
-        die("Connection failed: " . mysqli_connect_error());
-    }
-
-    // Truy vấn người dùng chỉ bằng `ten_dang_nhap`
-    $sql = "SELECT * FROM nguoi_dung WHERE ten_dang_nhap = ? AND trang_thai = 'Active'";
-
-
-    if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            $user = $result->fetch_assoc();
-
-            if ($hashed_password === $user['mat_khau']) {
-                    // Secure session management
-                    session_regenerate_id(true);
-
-                    $_SESSION['username'] = htmlspecialchars($user['ten_dang_nhap']);
-                    $_SESSION['role'] = htmlspecialchars($user['vai_tro']);
-
-                    $nguoi_dung_id = $user['id'];
-                    $query = "SELECT id, ho_ten FROM nhan_vien WHERE nguoi_dung_id = ?";
-                    $stmt = $conn->prepare($query);
-                    $stmt->bind_param("i", $nguoi_dung_id);
-                    $stmt->execute();
-                    $stmt->bind_result($nhan_vien_id, $ho_ten);
-                    $stmt->fetch();
-                    $_SESSION['nhan_vien_id'] = $nhan_vien_id;
-                    $_SESSION['ho_ten'] = $ho_ten;
-                    $stmt->close();
-
-                    header("Location: index.php");
-                    exit();
-
-            } else {
-                $error = "Mật khẩu không đúng!";
-            }
-
-        } else {
-            $error = "Tài khoản không tồn tại hoặc không hoạt động.";
+    try {
+        // Lấy ID người dùng từ nhân viên
+        $sql_get_user_id = "SELECT nguoi_dung_id FROM nhan_vien WHERE id = ?";
+        $stmt_get_user_id = $conn->prepare($sql_get_user_id);
+        $stmt_get_user_id->bind_param("i", $nhan_vien_id);
+        $stmt_get_user_id->execute();
+        $result = $stmt_get_user_id->get_result();
+        if ($result->num_rows === 0) {
+            throw new Exception("Không tìm thấy nhân viên.");
         }
+        $nguoi_dung_id = $result->fetch_assoc()['nguoi_dung_id'];
+        $stmt_get_user_id->close();
 
-        $stmt->close();
-    } else {
-        $error = "Có lỗi xảy ra trong quá trình chuẩn bị truy vấn.";
+        // Xóa địa chỉ của nhân viên
+        $sql_delete_address = "DELETE FROM dia_chi WHERE nhan_vien_id = ?";
+        $stmt_delete_address = $conn->prepare($sql_delete_address);
+        $stmt_delete_address->bind_param("i", $nhan_vien_id);
+        if (!$stmt_delete_address->execute()) {
+            throw new Exception("Xóa địa chỉ không thành công.");
+        }
+        $stmt_delete_address->close();
+
+        // Xóa tài khoản người dùng
+        $sql_delete_user = "DELETE FROM nguoi_dung WHERE id = ?";
+        $stmt_delete_user = $conn->prepare($sql_delete_user);
+        $stmt_delete_user->bind_param("i", $nguoi_dung_id);
+        if (!$stmt_delete_user->execute()) {
+            throw new Exception("Xóa tài khoản người dùng không thành công.");
+        }
+        $stmt_delete_user->close();
+        // Xóa nhân viên
+        $sql_delete_employee = "DELETE FROM nhan_vien WHERE id = ?";
+        $stmt_delete_employee = $conn->prepare($sql_delete_employee);
+        $stmt_delete_employee->bind_param("i", $nhan_vien_id);
+        if (!$stmt_delete_employee->execute()) {
+            throw new Exception("Xóa nhân viên không thành công.");
+        }
+        $stmt_delete_employee->close();
+
+
+        // Commit giao dịch nếu tất cả đều thành công
+        $conn->commit();
+
+        // Thông báo thành công
+        echo "Nhân viên và tài khoản người dùng đã được xóa thành công.";
+
+        // Chuyển hướng về trang danh sách nhân viên
+        header("Location: list.php");
+        exit;
+    } catch (Exception $e) {
+        // Rollback nếu có lỗi
+        $conn->rollback();
+        echo "Có lỗi xảy ra: " . $e->getMessage();
+    } finally {
+        // Đóng kết nối
+        $conn->close();
     }
-
-    $conn->close();
+} else {
+    echo "Yêu cầu không hợp lệ.";
+    exit;
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập</title>
-    <link rel="stylesheet" href="../includes/css/login_style.css">
-</head>
-<body>
-<div class="login-container">
-    <h2>Đăng nhập</h2>
-    <?php if (isset($error)) { echo "<div class='error'>$error</div>"; } ?>
-    <form action="login.php" method="POST">
-        <label for="username">Tên đăng nhập</label>
-        <input type="text" id="username" name="username" required>
-
-        <label for="password">Mật khẩu</label>
-        <input type="password" id="password" name="password" required>
-
-        <button type="submit">Đăng nhập</button>
-    </form>
-</div>
-</body>
-</html>

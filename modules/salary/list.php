@@ -8,7 +8,14 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 session_start();
 
+$error = isset($_GET['error']) ? $_GET['error'] : null;
 
+if ($error) {
+    echo "<script>alert('$error');</script>";
+    $currentUrl = strtok($_SERVER["REQUEST_URI"], '?');
+    echo "<script>window.location.href='$currentUrl';</script>";
+    exit;
+}
 $current_month = date('n'); // Tháng hiện tại (1-12)
 $current_year = date('Y'); // Năm hiện tại
 
@@ -21,14 +28,12 @@ if ($default_month == 0) { // Nếu tháng hiện tại là 1, thì tháng trư�
     $default_year--;
 }
 
+
 // Nhận giá trị từ GET hoặc gán mặc định
 $thang = isset($_GET['thang']) && is_numeric($_GET['thang']) ? (int)$_GET['thang'] : $default_month;
 $nam = isset($_GET['nam']) && is_numeric($_GET['nam']) ? (int)$_GET['nam'] : $default_year;
 
-// Đảm bảo giá trị hợp lệ
-if ($thang < 1 || $thang > 12) {
-    $thang = $default_month;
-}
+
 if ($nam < 1900 || $nam > $current_year) {
     $nam = $default_year;
 }

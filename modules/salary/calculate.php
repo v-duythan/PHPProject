@@ -4,6 +4,14 @@ require_once '../../config/config.php';
 
 $nam = $_GET['year'];
 $thang = $_GET['month'];
+
+$current_month = date('n'); // Tháng hiện tại (1-12)
+$current_year = date('Y'); // Năm hiện tại
+
+if ($nam > $current_year || ($nam == $current_year && $thang >= $current_month)) {
+    header("Location: list.php?error=Không thể tính lương cho tháng hiện tại hoặc tương lai");
+    exit();
+}
 // Lấy thông tin từ bảng cham_cong
 $sql = "SELECT cham_cong.nhan_vien_id, cham_cong.ngay, cham_cong.trang_thai, cham_cong.gio_lam_them, YEAR(cham_cong.ngay) as nam, MONTH(cham_cong.ngay) as thang
         FROM cham_cong 

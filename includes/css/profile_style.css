@@ -6,8 +6,8 @@ body {
 }
 
 .profile-container {
-    max-width: 1600px;
-    margin: 50px auto;
+    max-width: 1500px;
+    margin-left: 200px;
     background-color: #fff;
     padding: 40px;
     border-radius: 8px;

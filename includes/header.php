@@ -47,6 +47,20 @@ $vaitro = isset($_SESSION['vaitro']) ? $_SESSION['vaitro'] : 'Guest';
         header nav a:hover {
             color: #0056b3;
         }
+        .logout-button {
+            color: #fff;
+            background-color: #007bff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .logout-button:hover {
+            background-color: #ececec;
+        }
     </style>
 </head>
 <body>
@@ -56,8 +70,17 @@ $vaitro = isset($_SESSION['vaitro']) ? $_SESSION['vaitro'] : 'Guest';
         <h1 style="font-size: 24px; color: #343a40; margin: 20px;">Chào
             mừng, <?php echo htmlspecialchars($ho_ten); ?></h1>
 
-        <h1 style="color: #007bff; margin: 20px;"><?php echo date('d/m/Y'); ?></h1>
-        <a href="<?php echo BASE_URL; ?>public/logout.php" style="color: #007bff; text-decoration: none; margin: 20px;">Đăng
-            xuất</a>
+        <h1 style="margin: 20px;">Hôm nay là ngày: <?php echo date('d/m/Y'); ?></h1>
+
+            <nav>
+                <a href="<?php echo BASE_URL; ?>public/index.php">Trang chủ</a>
+                <a href="<?php echo BASE_URL; ?>public/contact.php">Liên hệ</a>
+                <a href="<?php echo BASE_URL; ?>public/about.php">Giới thiệu</a>
+
+                <a href="<?php echo BASE_URL; ?>public/logout.php" class="logout-button">Đăng xuất</a>
+                <a href="<?php echo BASE_URL; ?>public/change_password.php" class="logout-button"
+                style="margin-right: 20px">Đổi mật khẩu</a>
+            </nav>
+
     </header>
 <div class="container">

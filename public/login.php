@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Secure session management
                 session_regenerate_id(true);
 
+                $_SESSION['id'] = htmlspecialchars($user['id']);
                 $_SESSION['username'] = htmlspecialchars($user['ten_dang_nhap']);
                 $_SESSION['role'] = htmlspecialchars($user['vai_tro']);
 

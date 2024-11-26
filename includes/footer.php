@@ -5,8 +5,9 @@
     position: fixed;
     bottom: 0;
     width: 100%;">
-    <p>&copy; 2024 DUYTHAN COMPANY. All rights reserved.</p>
-    <p>Contact us: vduythan@gmail.com | Phone: 0389254181</p>
+    <p>&copy; 2024. All rights reserved.</p>
+    <p>Võ Duy Thân 63135407</p>
+    <p>Nguyễn Hoài Phương 59131954</p>
 </footer>
 </div>
 </body>

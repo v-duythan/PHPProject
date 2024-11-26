@@ -1,8 +1,6 @@
 <?php
 include '../../config/database.php';
 include_once __DIR__ . '/../../config/config.php';
-include '../../includes/header.php';
-include '../../includes/admin_sidebar.php';
 session_start();
 
 // Kiểm tra ID nhân viên
@@ -44,7 +42,11 @@ $stmt_positions->execute();
 $result_positions = $stmt_positions->get_result();
 
 ?>
+<?php
 
+include '../../includes/header.php';
+include '../../includes/admin_sidebar.php';
+?>
 <main class="content">
     <h1>Chỉnh Sửa Thông Tin Nhân Viên</h1>
     <form method="POST" action="process_edit.php">
